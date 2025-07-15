@@ -76,9 +76,29 @@ export default function Home() {
     }
   };
 
+  const handleSave = async () => {
+    try {
+      const res = await fetch("/api/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, summary, urduSummary, content }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Saved to Supabase and MongoDB!");
+      } else {
+        alert(`Save failed: ${data.message}`);
+      }
+    } catch (err) {
+      alert("Error saving blog data.");
+      console.error(err);
+    }
+  };
+
   return (
     <div className="w-full min-h-screen flex flex-col px-4">
-      <h1 className="text-3xl font-semibold text-center pt-12 pb-5">
+      <h1 className="text-3xl font-semibold text-center pt-28 pb-5">
         AI Blog Summariser
       </h1>
 
@@ -132,6 +152,15 @@ export default function Home() {
             </TabsContent>
 
           </Tabs>
+
+          <Button
+            className="mt-4 w-full"
+            onClick={handleSave}
+            disabled={!summary || !content}
+          >
+            Save Summary
+          </Button>
+
         </div>
       </div>
     </div>
