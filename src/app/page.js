@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import "./globals.css";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
 
 const enToUrdu = {
   "today": "آج",
@@ -146,58 +147,66 @@ export default function Home() {
 
           </div>
 
-          {fetched && (
-            <>
-              <Tabs defaultValue="content" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="content">Full Content</TabsTrigger>
-                  <TabsTrigger value="summary">Summary (English)</TabsTrigger>
-                  <TabsTrigger value="urdu">Summary (Urdu)</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="content">
-                  <Textarea
-                    placeholder="Blog content will appear here..."
-                    className="w-full h-48 resize-none text-sm"
-                    value={content}
-                    readOnly
-                  />
-                </TabsContent>
-
-                <TabsContent value="summary">
-                  <Textarea
-                    placeholder="Summary will appear here..."
-                    className="w-full h-48 resize-none text-sm"
-                    value={summary}
-                    readOnly
-                  />
-                </TabsContent>
-
-                <TabsContent value="urdu">
-                  <Textarea
-                    placeholder="اردو خلاصہ یہاں ظاہر ہوگا..."
-                    className="w-full h-48 resize-none text-sm"
-                    value={urduSummary}
-                    readOnly
-                  />
-                </TabsContent>
-              </Tabs>
-
-              <Button
-                className="mt-4 w-full"
-                onClick={handleSave}
-                disabled={!summary || !content || saving}
+          <AnimatePresence initial={false}>
+            {fetched && (
+              <motion.div
+                className="w-full overflow-hidden"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
               >
-                {saving ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" /> Saving...
-                  </span>
-                ) : (
-                  "Save Summary"
-                )}
-              </Button>
-            </>
-          )}
+                <Tabs defaultValue="content" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="content">Full Content</TabsTrigger>
+                    <TabsTrigger value="summary">Summary (English)</TabsTrigger>
+                    <TabsTrigger value="urdu">Summary (Urdu)</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="content">
+                    <Textarea
+                      placeholder="Blog content will appear here..."
+                      className="w-full h-48 resize-none text-sm"
+                      value={content}
+                      readOnly
+                    />
+                  </TabsContent>
+
+                  <TabsContent value="summary">
+                    <Textarea
+                      placeholder="Summary will appear here..."
+                      className="w-full h-48 resize-none text-sm"
+                      value={summary}
+                      readOnly
+                    />
+                  </TabsContent>
+
+                  <TabsContent value="urdu">
+                    <Textarea
+                      placeholder="اردو خلاصہ یہاں ظاہر ہوگا..."
+                      className="w-full h-48 resize-none text-sm"
+                      value={urduSummary}
+                      readOnly
+                    />
+                  </TabsContent>
+                </Tabs>
+
+                <Button
+                  className="mt-4 w-full"
+                  onClick={handleSave}
+                  disabled={!summary || !content || saving}
+                >
+                  {saving ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" /> Saving...
+                    </span>
+                  ) : (
+                    "Save Summary"
+                  )}
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
         </div>
       </div>
