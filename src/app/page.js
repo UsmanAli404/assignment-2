@@ -166,7 +166,7 @@ export default function Home() {
                   <TabsContent value="content">
                     <Textarea
                       placeholder="Blog content will appear here..."
-                      className="w-full h-48 resize-none text-sm overflow-y-scroll scrollbar-hide"
+                      className="w-full h-48 resize-none text-sm overflow-y-scroll md:scrollbar-hide"
                       value={content}
                       readOnly
                     />
@@ -175,7 +175,7 @@ export default function Home() {
                   <TabsContent value="summary">
                     <Textarea
                       placeholder="Summary will appear here..."
-                      className="w-full h-48 resize-none text-sm overflow-y-scroll scrollbar-hide"
+                      className="w-full h-48 resize-none text-sm overflow-y-scroll md:scrollbar-hide"
                       value={summary}
                       readOnly
                     />
@@ -184,7 +184,7 @@ export default function Home() {
                   <TabsContent value="urdu">
                     <Textarea
                       placeholder="اردو خلاصہ یہاں ظاہر ہوگا..."
-                      className="w-full h-48 resize-none text-sm overflow-y-scroll scrollbar-hide"
+                      className="w-full h-48 resize-none text-sm overflow-y-scroll md:scrollbar-hide"
                       value={urduSummary}
                       readOnly
                     />
