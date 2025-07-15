@@ -1,6 +1,11 @@
 import * as cheerio from "cheerio";
 import axios from "axios";
 
+function simulateSummary(text) {
+  const sentences = text.split(/(?<=[.?!])\s+/);
+  return sentences.slice(0, 3).join(" ");
+}
+
 export async function POST(request) {
   try {
     const { url } = await request.json();
@@ -19,31 +24,27 @@ export async function POST(request) {
       }
     });
 
-    if (response.status !== 200) {
-      return new Response(
-        JSON.stringify({ content: `Failed with status ${response.status}` }),
-        { status: response.status }
-      );
-    }
-
     const html = response.data;
     const $ = cheerio.load(html);
 
     const text = $("p")
       .map((i, el) => $(el).text())
       .get()
-      .join("\n\n");
+      .join(" ");
+
+    const trimmedText = text.slice(0, 5000);
+    const summary = simulateSummary(trimmedText);
 
     return new Response(
-      JSON.stringify({ content: text.slice(0, 5000) }),
+      JSON.stringify({ content: trimmedText, summary }),
       { status: 200 }
     );
 
   } catch (error) {
     console.error("Scraping error:", error.message);
     return new Response(
-    JSON.stringify({ content: `Failed: ${error.response.status} ${error.response.statusText}` }),
-        { status: error.response.status }
+      JSON.stringify({ content: `Failed: ${error.response?.status || 500} ${error.response?.statusText || "Error"}` }),
+      { status: error.response?.status || 500 }
     );
   }
 }
